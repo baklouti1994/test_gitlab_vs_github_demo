@@ -24,28 +24,8 @@ before_script:
   - source venv/bin/activate
 
 test:
+  stage: test
   script:
-    - python setup.py test
-    - pip install tox flake8  # you can also use tox
-    - tox -e py36,flake8
-
-run:
-  script:
-    - python setup.py bdist_wheel
-    # an alternative approach is to install and run:
-    - pip install dist/*
-    # run the command here
-  artifacts:
-    paths:
-      - dist/*.whl
-
-pages:
-  script:
-    - pip install sphinx sphinx-rtd-theme
-    - cd doc ; make html
-    - mv build/html/ ../public/
-  artifacts:
-    paths:
-      - public
-  only:
-    - master
+    -python -m unittest discover --verbose . "*_test_py"
+  tags:
+    -docker
